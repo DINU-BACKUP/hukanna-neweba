@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mongo Explorer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>MongoDB Explorer</h1>
+
+<div>
+    <label>Mongo URL:</label>
+    <input type="text" id="mongoUrl" placeholder="mongodb+srv://...">
+    <button onclick="connect()">Connect</button>
+</div>
+
+<div id="databases"></div>
+<div id="collections"></div>
+<div id="documents"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
