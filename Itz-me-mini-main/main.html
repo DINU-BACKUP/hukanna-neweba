@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DINUWH MD - Pair Code</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      background: url("https://i.ibb.co/spnkzKQH/308b0a4a84b1.jpg") no-repeat center center/cover;
+      backdrop-filter: blur(5px);
+    }
+
+    .card {
+      width: 400px;
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,255,200,0.4);
+      text-align: center;
+      color: #fff;
+      border: 1px solid rgba(0,255,200,0.4);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 2rem;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .card h4 {
+      margin: 10px 0;
+      color: #bbb;
+      font-weight: 400;
+    }
+
+    .rainbow-number {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 15px 0;
+      background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 300%;
+      animation: rainbowMove 3s infinite linear;
+    }
+
+    @keyframes rainbowMove {
+      0% { background-position: 0%; }
+      100% { background-position: 300%; }
+    }
+
+    .input-box {
+      display: flex;
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    .input-box input {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    .input-box input::placeholder {
+      color: #aaa;
+    }
+
+    .input-box button {
+      padding: 14px 20px;
+      border: none;
+      background: linear-gradient(135deg, #00ffcc, #0099ff);
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .input-box button:hover {
+      background: linear-gradient(135deg, #ff00cc, #3333ff);
+      color: #fff;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .copyable {
+      cursor: pointer;
+      color: #ff4444;
+      font-size: 1.2rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <i class="fa-solid fa-link fa-2x" style="color:#00ffcc;margin-bottom:15px;"></i>
+    <h2>DINUWH MD</h2>
+    <h4>Pair Code System</h4>
+    <p>Enter your WhatsApp number with country code</p>
+
+    <div class="input-box">
+      <input type="number" id="number" placeholder="+94xxxxxxxxx">
+      <button id="submit">Get Code</button>
+    </div>
+
+    <div id="rainbow-display" class="rainbow-number"></div>
+    <div id="pair" class="result"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+    let rainbowDisplay = document.getElementById("rainbow-display");
+
+    c.addEventListener("input", () => {
+      rainbowDisplay.textContent = c.value;
+    });
+
+    async function Copy() {
+      let obj = document.getElementById("copy");
+      await navigator.clipboard.writeText(obj.innerText.replace("CODE: ", ""));
+      obj.innerText = "✅ Copied!";
+      setTimeout(() => {
+        obj.innerText = "CODE: " + obj.dataset.code;
+      }, 1000);
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!c.value) {
+        a.innerHTML = "<span style='color:#ff4444'>❗ Enter number first</span>";
+      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        a.innerHTML = "<span style='color:#ff4444'>❌ Invalid number format</span>";
+      } else {
+        const bc = c.value.replace(/[^0-9]/g, "");
+        a.innerHTML = "<span style='color:#00ffcc'>⏳ Generating code...</span>";
+        try {
+          let { data } = await axios(`/code?number=${bc}`);
+          let code = data.code || "Service Unavailable";
+          a.innerHTML = `<span id="copy" class="copyable" data-code="${code}" onclick="Copy()">CODE: ${code}</span>`;
+        } catch {
+          a.innerHTML = "<span style='color:#ff4444'>⚠ Server error</span>";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
