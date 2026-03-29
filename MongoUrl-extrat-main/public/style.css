@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f2f5;
+}
+
+input {
+    padding: 8px;
+    width: 300px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+h1, h2, h3, h4 {
+    color: #333;
+}
+
+p {
+    cursor: pointer;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+p:hover {
+    background-color: #ddd;
+}
+
+pre {
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
